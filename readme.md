@@ -2,6 +2,8 @@
 
 A production-ready Server-Side Rendering (SSR) boilerplate built with React, TanStack Router, TanStack Query, Tailwind CSS, and Vercel deployment.
 
+![SSR TanStack Boilerplate preview](./ssr-tanstack.png)
+
 ## 🚀 Features
 
 - **Server-Side Rendering (SSR)** - Fast initial page loads and improved SEO
