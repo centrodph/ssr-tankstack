@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CSS - Vite will transform this in dev and replace with compiled CSS in production -->
+    <link href="/src/style.css" rel="stylesheet" />
+    <!-- HeadContent component will inject title and meta tags here -->
+  </head>
+  <body>
+    <!-- Root mount point for React app -->
+    <!-- The rendered HTML will include HeadContent, app content, and Scripts component -->
+    <div id="root"><!--app-html--></div>
+    <!-- Client entry script - Vite will replace this with the final JS path in production -->
+    <script type="module" src="/src/entry-client.tsx"></script>
+  </body>
+</html>
+

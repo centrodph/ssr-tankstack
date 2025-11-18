@@ -1,0 +1,45 @@
+{
+  "name": "ssr-tanstack-boilerplate",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SSR boilerplate with React, TanStack Router, TanStack Query, Tailwind CSS, and Vercel deployment",
+  "scripts": {
+    "dev": "vite",
+    "dev:ssr": "NODE_ENV=development npx tsx server.ts",
+    "build:client": "vite build",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "build": "npm run build:client && npm run build:server && mkdir -p public && cp -r dist/client/assets public/ 2>/dev/null || true && rm -f public/index.html",
+    "preview": "vite preview",
+    "preview:ssr": "NODE_ENV=production npx tsx server.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.62.11",
+    "@tanstack/react-router": "^1.87.0",
+    "@tanstack/react-router-ssr-query": "^1.87.0",
+    "compression": "^1.7.4",
+    "express": "^4.21.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@tanstack/react-router-devtools": "^1.87.0",
+    "@tanstack/router-plugin": "^1.87.0",
+    "@types/compression": "^1.7.5",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

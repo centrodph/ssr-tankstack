@@ -1,0 +1,224 @@
+# SSR TanStack Boilerplate
+
+A production-ready Server-Side Rendering (SSR) boilerplate built with React, TanStack Router, TanStack Query, Tailwind CSS, and Vercel deployment.
+
+## 🚀 Features
+
+- **Server-Side Rendering (SSR)** - Fast initial page loads and improved SEO
+- **Type-Safe Routing** - File-based routing with TanStack Router
+- **Data Fetching** - TanStack Query with automatic SSR hydration
+- **Modern Styling** - Tailwind CSS v4 with zero-config setup
+- **Fast Development** - Vite with HMR and fast builds
+- **Production Ready** - Optimized builds and Vercel deployment
+- **Code Splitting** - Automatic route-based code splitting
+- **TypeScript** - Full type safety throughout the application
+
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, or pnpm
+
+## 🛠️ Installation
+
+1. Clone the repository:
+```bash
+git clone <your-repo-url>
+cd ssr-tankstack
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+## 🏃 Development
+
+### Client-Side Development (CSR)
+For rapid development iteration without SSR:
+```bash
+npm run dev
+```
+This starts the Vite dev server at `http://localhost:5173`
+
+### Server-Side Rendering Development (SSR)
+To test SSR locally:
+```bash
+npm run dev:ssr
+```
+This starts the Express SSR server at `http://localhost:3000`
+
+## 🏗️ Building
+
+Build the application for production:
+```bash
+npm run build
+```
+
+This command:
+1. Builds the client bundle (`dist/client/`)
+2. Builds the server bundle (`dist/server/`)
+3. Copies static assets to `public/` for Vercel CDN
+
+### Preview Production Build
+To preview the production build locally:
+```bash
+npm run preview:ssr
+```
+
+## 📁 Project Structure
+
+```
+ssr-tankstack/
+├── src/
+│   ├── routes/              # File-based routes
+│   │   ├── __root.tsx       # Root layout route
+│   │   ├── index.tsx        # Home page (/)
+│   │   └── repos/
+│   │       └── $username.tsx # Dynamic route (/repos/:username)
+│   ├── router.tsx           # Router configuration
+│   ├── entry-client.tsx     # Client-side hydration entry
+│   ├── entry-server.tsx     # Server-side rendering entry
+│   └── style.css            # Tailwind CSS imports
+├── server.ts                 # Express server (dev & prod)
+├── vite.config.ts           # Vite configuration
+├── vercel.json              # Vercel deployment config
+└── package.json             # Dependencies and scripts
+```
+
+## 🎯 Key Concepts
+
+### File-Based Routing
+Routes are defined as files in `src/routes/`:
+- `index.tsx` → `/`
+- `repos/$username.tsx` → `/repos/:username`
+
+The `$` prefix indicates a dynamic route parameter.
+
+### SSR Data Fetching
+Data is prefetched in route loaders for SSR:
+
+```typescript
+export const Route = createFileRoute('/repos/$username')({
+  loader: async ({ params, context }) => {
+    // Prefetch data on server
+    return context.queryClient.ensureQueryData(userReposQuery(params.username));
+  },
+  component: function ReposPage() {
+    // Use Suspense query to read cached data
+    const { data } = useSuspenseQuery(userReposQuery(username));
+    // ...
+  }
+});
+```
+
+### Router Context
+The router context provides access to the QueryClient in loaders:
+```typescript
+context.queryClient.ensureQueryData(queryOptions)
+```
+
+## 🚢 Deployment to Vercel
+
+### Option 1: Vercel CLI
+1. Install Vercel CLI:
+```bash
+npm i -g vercel
+```
+
+2. Deploy:
+```bash
+vercel --prod
+```
+
+### Option 2: GitHub Integration
+1. Push your code to GitHub
+2. Import the repository in Vercel
+3. Vercel will automatically detect the configuration and deploy
+
+### Build Configuration
+The `vercel.json` file configures:
+- Build command: `npm run build`
+- Output directory: `dist/client`
+- Serverless function: `server.ts`
+- All routes rewrite to the server function
+
+### Static Assets
+Static assets (JS, CSS) are copied to `public/` during build and served via Vercel's CDN for optimal performance.
+
+## 📚 Documentation
+
+### TanStack Router
+- [Official Documentation](https://tanstack.com/router)
+- [SSR Guide](https://tanstack.com/router/latest/docs/framework/react/guide/ssr)
+
+### TanStack Query
+- [Official Documentation](https://tanstack.com/query)
+- [SSR Integration](https://tanstack.com/router/latest/docs/framework/react/guide/ssr#data-loading)
+
+### Tailwind CSS
+- [Official Documentation](https://tailwindcss.com)
+- [Vite Plugin](https://tailwindcss.com/docs/guides/vite)
+
+## 🧪 Example Routes
+
+### Home Page (`/`)
+Simple welcome page demonstrating basic routing.
+
+### GitHub Repos (`/repos/:username`)
+Fetches and displays a GitHub user's repositories:
+- Prefetches data on the server (SSR)
+- Hydrates cache on the client
+- No loading spinners on initial load
+
+Try: `/repos/tanstack` or `/repos/vercel`
+
+## 🔧 Customization
+
+### Adding New Routes
+1. Create a new file in `src/routes/`
+2. Use `createFileRoute()` to define the route
+3. The route tree is auto-generated by the TanStack Router plugin
+
+### Styling
+- Tailwind CSS classes are used throughout
+- Custom styles can be added to `src/style.css`
+- Tailwind v4 automatically detects class usage
+
+### Environment Variables
+Create a `.env` file for environment-specific variables:
+```
+PORT=3000
+NODE_ENV=development
+```
+
+## 🐛 Troubleshooting
+
+### Route Tree Not Generated
+If `src/routeTree.gen.ts` is missing:
+1. Restart the dev server
+2. Or run `npm run build` once to trigger generation
+
+### Build Errors
+- Ensure Node.js 18+ is installed
+- Clear `node_modules` and reinstall: `rm -rf node_modules && npm install`
+- Check TypeScript errors: `npx tsc --noEmit`
+
+### Vercel Deployment Issues
+- Ensure `vercel.json` is in the root directory
+- Check build logs in Vercel dashboard
+- Verify Node.js version matches `package.json` engines
+
+## 📝 License
+
+MIT
+
+## 🙏 Acknowledgments
+
+- [TanStack](https://tanstack.com) for excellent routing and query libraries
+- [Vite](https://vitejs.dev) for the fast build tool
+- [Tailwind CSS](https://tailwindcss.com) for utility-first CSS
+- [Vercel](https://vercel.com) for seamless deployment
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
